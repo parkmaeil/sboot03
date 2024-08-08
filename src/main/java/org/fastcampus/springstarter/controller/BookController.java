@@ -40,13 +40,20 @@ public class BookController {
                       Book book=bookOptional.get(); // 리뷰정보도 담아져있다.
                       model.addAttribute("book", book);
 
-                   // 평균 평점을 계산하여 모델에 추가
-                   double averageRating = book.getReviews().stream()
+                  // 평균 평점을 계산하여 모델에 추가
+                  /* double averageRating = book.getReviews().stream()
                           .mapToInt(Review::getRating)
                           .average()
                           .orElse(0.0);
                      String formattedAverageRating = String.format("%.1f", averageRating);
-                     model.addAttribute("averageRating", formattedAverageRating);
+                     model.addAttribute("averageRating", formattedAverageRating);*/
+                     Double averageRating=reviewService.reviewAvgRating(id);
+                     if(averageRating!=null){
+                         String formattedAverageRating = String.format("%.1f", averageRating);
+                         model.addAttribute("averageRating", formattedAverageRating);
+                     }else{
+                         model.addAttribute("averageRating", "평점이 없습니다.");
+                     }
 
                       return "detail"; // 상세보기 View(detail.html) : ${book}
               }else{
@@ -61,5 +68,11 @@ public class BookController {
               review.setCreatedAt(LocalDateTime.now());
               reviewService.save(review); // 등록성공
               return "redirect:/detail/"+book.getId();
+    }
+
+    @PostMapping("/deleteReview")
+    public String deleteReview(Long review_id, Long book_id){
+            reviewService.deleteReviewById(review_id); // 삭제성공
+            return "redirect:/detail/"+book_id;
     }
 }

@@ -51,6 +51,12 @@
                           <p th:text="${reviews.content}">리뷰내용</p>
                           <small th:text="${reviews.createdAt}">작성일자</small>
                           <p><small>평점:<span  th:text="${reviews.rating}"></span>/5</small></p>
+                          <!-- Delete Button -->
+                          <form th:action="@{/deleteReview}" method="post" style="display:inline;">
+                              <input type="hidden" name="review_id" th:value="${reviews.id}">
+                              <input type="hidden" name="book_id" th:value="${reviews.book.id}">
+                              <button type="submit" class="btn btn-danger btn-sm">삭제</button>
+                          </form>
                       </div>
                  </div>
             </div>

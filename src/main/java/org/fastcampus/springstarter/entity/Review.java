@@ -23,7 +23,7 @@ public class Review {  // create table review ~ SQL
     @ManyToOne
     // FK : book_id
     @JoinColumn(name = "book_id", referencedColumnName = "id", nullable = false)
-    private Book book;
+    private Book book; // Book(id)->book.id
 
 }
 /*

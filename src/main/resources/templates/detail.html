@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Thymeleaf Bootstrap Template</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body>
+<!-- Header Section -->
+<div th:replace="fragments/header :: header"></div>
+<!--MainContentSection-->
+<div class="container my-5">
+    <!-- 상세보기 -->
+    <div class="card">
+          <div class="card-header">
+               <h2>상세보기</h2>
+          </div>
+          <div class="card-body">
+                 <div class="row">
+                        <div class="col-8">
+                              <h3 th:text="${book.subject}"></h3>
+                              <h6 th:text="${book.author}"></h6>
+                             <p>
+                                  Price :<span th:text="${book.price}"></span><br/>
+                                  Page : <span th:text="${book.page}"></span><br/>
+                                  Created At:<span th:text="${book.createdAt}"></span>
+                             </p>
+                            <p>추가 적인 설명을 출력하세요......</p>
+                        </div>
+                        <div class="col-4">
+                              <img th:src="@{/images/book.jpg}" class="img-fluid" alt="Book Image">
+                        </div>
+                 </div>
+          </div>
+    </div>
+    <!-- 상세보기 END-->
+    <!-- 리뷰목록-->
+    <div class="card">
+        <div class="card-header">
+             <h2>리뷰목록</h2>
+             <span class="badge badge-secondary">
+                 <span th:text="${#lists.size(book.reviews)}"></span> 개,
+                 평점:<span th:text="${averageRating}">?</span>/5
+             </span>
+        </div>
+        <div class="card-body">
+            <div th:if="${book.reviews !=null and #lists.size(book.reviews) > 0}">
+                 <div class="list-group" th:each="reviews : ${book.reviews}">
+                      <div class="list-group-item">
+                          <p th:text="${reviews.content}">리뷰내용</p>
+                          <small th:text="${reviews.createdAt}">작성일자</small>
+                          <p><small>평점:<span  th:text="${reviews.rating}"></span>/5</small></p>
+                      </div>
+                 </div>
+            </div>
+            <div th:if="${book.reviews ==null or #lists.size(book.reviews) == 0}">
+               <p>작성된 리뷰가 없습니다.</p>
+            </div>
+        </div>
+    </div>
+    <!-- 리뷰목록 END-->
+    <!-- 리뷰및 평점 쓰기-->
+    <div class="card">
+           <div class="card-header">
+                <h2>리뷰 및 평점 쓰기</h2>
+           </div>
+          <div class="card-body">
+                <form th:action="@{/register}" method="post">
+                    <input type="hidden" name="book_id" th:value="${book.id}">
+                    <div class="form-group">
+                        <label for="content">리뷰내용</label>
+                        <textarea class="form-control" id="content" name="content" rows="3" required></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label for="rating">평점</label>
+                        <select class="form-control" id="rating" name="rating" required>
+                            <option value="1">1 - Poor</option>
+                            <option value="2">2 - Fair</option>
+                            <option value="3">3 - Good</option>
+                            <option value="4">4 - Very Good</option>
+                            <option value="5">5 - Excellent</option>
+                        </select>
+                    </div>
+                    <button type="submit" class="btn btn-secondary btn-sm">리뷰등록</button>
+                </form>
+          </div>
+    </div>
+    <!-- 리스트로 가기 -->
+    <div class="text-right mt-5">
+        <a href="/" class="btn btn-primary btn-sm">리스트로....</a>
+    </div>
+</div>
+<!-- Footer Section -->
+<div th:replace="fragments/footer :: footer"></div>
+</body>
+</html>

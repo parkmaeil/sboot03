@@ -1,0 +1,26 @@
+spring:
+  datasource:
+    username: admin
+    url: jdbc:h2:file:./db/bookdb
+    driverClassName: org.h2.Driver
+    password: password
+
+  h2:
+    console:
+      enabled: 'true'
+      path: /db-console
+
+ # JPA -> Hibernate(SQL ??)
+  jpa:
+    database-platform: org.hibernate.dialect.H2Dialect
+    properties:
+      hibernate:
+        format_sql: 'true'
+    hibernate:
+      ddl-auto: update  # @Entity->create SQL
+      #naming:
+        #physical-strategy: org.hibernate.boot.model.naming.PhysicalNamingStrategyStandardImpl
+    show-sql: 'true'
+
+server:
+  port: '8081'
